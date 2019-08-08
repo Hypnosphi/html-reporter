@@ -1,5 +1,5 @@
 {
-  "name": "html-reporter",
+  "name": "@hypnosphi/html-reporter",
   "version": "6.0.0-alpha.31",
   "description": "Plugin for hermione which is intended to aggregate the results of tests running into html report",
   "scripts": {
