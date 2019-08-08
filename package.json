@@ -1,5 +1,8 @@
 {
-  "name": "html-reporter",
+  "name": "@hypnosphi/html-reporter",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "9.17.0",
   "description": "Plugin for hermione which is intended to aggregate the results of tests running into html report",
   "files": [
