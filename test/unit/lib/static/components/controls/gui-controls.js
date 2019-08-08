@@ -13,7 +13,8 @@ describe('<ControlButtons />', () => {
         actionsStub = {
             runAllTests: sandbox.stub().returns({type: 'some-type'}),
             runFailedTests: sandbox.stub().returns({type: 'some-type'}),
-            acceptOpened: sandbox.stub().returns({type: 'some-type'})
+            acceptOpened: sandbox.stub().returns({type: 'some-type'}),
+            stopServer: sandbox.stub().returns({type: 'some-type'})
         };
 
         ControlButtons = proxyquire('lib/static/components/controls/gui-controls', {
@@ -43,6 +44,14 @@ describe('<ControlButtons />', () => {
         it('should be disabled while tests running', () => {
             const component = mkConnectedComponent(<ControlButtons />, {
                 initialState: {suiteIds: {all: ['some-suite']}, running: true}
+            });
+
+            assert.isTrue(component.find(RunButton).prop('isDisabled'));
+        });
+
+        it('should be disabled when server is stopped', () => {
+            const component = mkConnectedComponent(<ControlButtons />, {
+                initialState: {suiteIds: {all: ['some-suite']}, serverStopped: true}
             });
 
             assert.isTrue(component.find(RunButton).prop('isDisabled'));
@@ -100,6 +109,14 @@ describe('<ControlButtons />', () => {
                 assert.isTrue(component.find(`[label="${button.name}"]`).prop('isDisabled'));
             });
 
+            it('should be disabled when server is stopped', () => {
+                const component = mkConnectedComponent(<ControlButtons />, {
+                    initialState: {suiteIds: {all: [], failed: ['suite1']}, serverStopped: true}
+                });
+
+                assert.isTrue(component.find(`[label="${button.name}"]`).prop('isDisabled'));
+            });
+
             it(`should call "${button.handler}" action on click`, () => {
                 const failedSuite = {name: 'suite1', status: 'fail'};
                 const component = mkConnectedComponent(<ControlButtons />, {
@@ -114,6 +131,24 @@ describe('<ControlButtons />', () => {
 
                 assert.calledOnceWith(actionsStub[button.handler], [failedSuite]);
             });
+        });
+    });
+
+    describe('"Stop server" button', () => {
+        it('should be disabled when server is already stopped', () => {
+            const component = mkConnectedComponent(<ControlButtons />, {
+                initialState: {serverStopped: true}
+            });
+
+            assert.isTrue(component.find('[label="Stop server"]').prop('isDisabled'));
+        });
+
+        it('should call "stopServer" action on click', () => {
+            const component = mkConnectedComponent(<ControlButtons />);
+
+            component.find('[label="Stop server"]').simulate('click');
+
+            assert.calledOnceWith(actionsStub.stopServer);
         });
     });
 });

@@ -74,6 +74,15 @@ describe('<State/>', () => {
             assert.isTrue(stateComponent.find('[label="✔ Accept"]').prop('isDisabled'));
         });
 
+        it('should be disabled when server is stopped', () => {
+            const testResult = mkTestResult_({status: IDLE});
+            utilsStub.isAcceptable.withArgs(testResult).returns(true);
+
+            const stateComponent = mkStateComponent({state: testResult}, {serverStopped: true});
+
+            assert.isTrue(stateComponent.find('[label="✔ Accept"]').prop('isDisabled'));
+        });
+
         it('should be enabled if test result is acceptable', () => {
             const testResult = mkTestResult_();
             utilsStub.isAcceptable.withArgs(testResult).returns(true);
@@ -110,6 +119,14 @@ describe('<State/>', () => {
             const testResult = mkTestResult_({status: SUCCESS});
 
             const stateComponent = mkStateComponent({state: testResult});
+
+            assert.isTrue(stateComponent.find('[label="🔍 Find same diffs"]').prop('isDisabled'));
+        });
+
+        it('should be disabled when server is stopped', () => {
+            const testResult = mkTestResult_({status: FAIL, actualImg: mkImg_(), diffImg: mkImg_()});
+
+            const stateComponent = mkStateComponent({state: testResult}, {serverStopped: true});
 
             assert.isTrue(stateComponent.find('[label="🔍 Find same diffs"]').prop('isDisabled'));
         });
