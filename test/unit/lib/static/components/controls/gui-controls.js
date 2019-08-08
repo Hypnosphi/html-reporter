@@ -47,6 +47,7 @@ describe('<ControlButtons />', () => {
             });
 
             assert.isTrue(component.find(RunButton).prop('isDisabled'));
+            assert.isTrue(component.find(RunButton).prop('isLoading'));
         });
 
         it('should be disabled when server is stopped', () => {
