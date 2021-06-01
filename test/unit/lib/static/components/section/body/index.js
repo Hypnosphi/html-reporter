@@ -100,7 +100,7 @@ describe('<Body />', () => {
             mkBodyComponent({browserId, resultIds});
             RetrySwitcher.firstCall.args[0].onChange(0);
 
-            assert.calledWith(actionsStub.changeTestRetry.lastCall, {browserId, retryIndex: 0});
+            assert.calledWith(actionsStub.changeTestRetry.lastCall, {browserId, retryIndex: 0, isUserClick: true});
         });
     });
 
@@ -119,7 +119,7 @@ describe('<Body />', () => {
         it('should call on mount', () => {
             mkBodyComponent({browserId: 'some-id', resultIds: ['result-1', 'result-2']});
 
-            assert.calledOnceWith(actionsStub.changeTestRetry, {browserId: 'some-id', retryIndex: 1});
+            assert.calledOnceWith(actionsStub.changeTestRetry, {browserId: 'some-id', retryIndex: 1, isUserClick: false});
         });
     });
 });
